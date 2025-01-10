@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from '../../Auth/services/auth.service';
+
 import { firstValueFrom } from 'rxjs';
 import { ResponseAPIGetPosts } from '../interfaces/ResponseApi_GetPosts';
 import { QueryObject } from '../interfaces/QueryObject';
+import { LocalStorageService } from '../../Auth/services/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,21 +15,33 @@ export class PostService {
   public errors: string[] = []
   private http = inject(HttpClient);
 
-  constructor(private authService: AuthService) {}
+  constructor(private localStorageService: LocalStorageService) {}
 
-
-  async GetAllPosts(queryObject: QueryObject): Promise<ResponseAPIGetPosts>{
-    try{
+  async GetAllPosts(queryObject: QueryObject): Promise<ResponseAPIGetPosts> {
+    try {
       const params = new HttpParams({ fromObject: { ...queryObject } });
-      const response = await firstValueFrom(
-        this.http.get<ResponseAPIGetPosts>(
-          `${this.baseUrl}`, {params}));
-      return Promise.resolve(response);
 
-    } catch (error){
-      console.log('Error en GetAllProducts',error);
-      let e = error as HttpErrorResponse;
-      this.errors.push(e.message)
+      const token = this.localStorageService.getVariable('token');
+
+      if (!token) {
+        throw new Error('Token no encontrado');
+      }
+
+      // Configura los encabezados y otros parámetros correctamente
+      const response = await firstValueFrom(
+        this.http.get<ResponseAPIGetPosts>(`${this.baseUrl}`, {
+          params: params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      );
+
+      return Promise.resolve(response);
+    } catch (error) {
+      console.error('Error en GetAllPosts:', error);
+      const e = error as HttpErrorResponse;
+      this.errors.push(e.message);
 
       return Promise.reject(error);
     }
@@ -44,7 +57,7 @@ export class PostService {
       formData.append('imageFile', imageFile, imageFile.name);
 
 
-      const token = this.authService.getToken();
+      const token = this.localStorageService.getVariable('token');
 
       if (!token) {
           throw new Error('Token no encontrado');
