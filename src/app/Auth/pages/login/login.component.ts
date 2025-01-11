@@ -5,7 +5,7 @@ import { LoginFomrsComponent } from '../../components/login-fomrs/login-fomrs.co
   selector: 'app-login',
   imports: [LoginFomrsComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
 

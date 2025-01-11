@@ -3,9 +3,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LocalStorageService } from '../../services/local-storage.service';
-import { routes } from '../../../app.routes';
 import { Router } from '@angular/router';
 import { AuhtDto } from '../../interfaces/AuthDto';
+import { routes } from '../../../app.routes';
 
 @Component({
   selector: 'auth-login-fomrs',
@@ -13,7 +13,7 @@ import { AuhtDto } from '../../interfaces/AuthDto';
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [AuthService, LocalStorageService],
   templateUrl: './login-fomrs.component.html',
-  styleUrl: './login-fomrs.component.css'
+  styleUrls: ['./login-fomrs.component.css']
 })
 export class LoginFomrsComponent implements OnInit {
 
@@ -24,9 +24,10 @@ export class LoginFomrsComponent implements OnInit {
 
   private authService = inject(AuthService);
   private localStorageService = inject(LocalStorageService);
+  private router = inject(Router);
 
 
-  constructor(private FormBuilder: FormBuilder, private routes: Router){}
+  constructor(private FormBuilder: FormBuilder){}
 
 
   ngOnInit() {
@@ -67,6 +68,7 @@ export class LoginFomrsComponent implements OnInit {
         this.localStorageService.setVariable('token', response.user.token);
         this.localStorageService.setVariable('email', response.user.email);
         console.log("email:", this.localStorageService.getVariable('email'));
+        this.router.navigate(['home']);
       }
 
       if(response){
