@@ -20,7 +20,9 @@
   </div>
 
 
-
+  <div *ngIf="successMessage" class="bg-green-500 text-white text-sm font-medium mb-5rounded-lg mb-5 flex justify-between items-center p-2">
+    {{ successMessage }}
+  </div>
 
   <div *ngFor="let error of errorMessage" class="bg-red-500 rounded-lg mb-5 flex justify-between items-center p-2">
     <p *ngIf="error" class="text-white text-sm font-medium mb-5">

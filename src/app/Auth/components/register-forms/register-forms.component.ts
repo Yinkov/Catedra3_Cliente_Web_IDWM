@@ -19,6 +19,7 @@ export class RegisterFormsComponent {
   loginAlert: boolean = false;
   error: boolean = false;
   errorMessage: string[] = [];
+  successMessage: string = '';
 
   private authService = inject(AuthService);
   private localStorageService = inject(LocalStorageService);
@@ -67,7 +68,15 @@ export class RegisterFormsComponent {
         this.localStorageService.setVariable('token', response.user.token);
         this.localStorageService.setVariable('email', response.user.email);
         console.log("email:", this.localStorageService.getVariable('email'));
-        this.router.navigate(['home']);
+
+        this.successMessage = '¡Registro exitoso! Redirigiendo...';
+
+
+        await setTimeout(() => {
+          this.router.navigate(['home']);
+        }, 3000);
+
+
       }
 
       if(response){
