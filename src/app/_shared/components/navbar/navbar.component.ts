@@ -24,4 +24,8 @@ export class NavbarComponent {
     this.router.navigate(['/'])
 
   }
+
+  addPost(){
+    this.router.navigate(['/home/addPost']);
+  }
 }

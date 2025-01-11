@@ -9,20 +9,21 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    pathMatch: 'full',
     loadComponent: () => import('../app/Post/pages/home/home.component').then((m) => m.HomeComponent),
     canActivate: [authGuardGuard],
     children: [
       {
         path: 'Posts',
-        pathMatch: 'full',
         loadComponent: () => import('../app/Post/pages/list-post-page/list-post-page.component').then((m) => m.ListPostPageComponent),
+      },
+      {
+        path: 'addPost',
+        loadComponent: () => import('../app/Post/pages/add-post-page/add-post-page.component').then((m) => m.AddPostPageComponent),
       },
       {
         path: '',
         redirectTo: 'Posts',
         pathMatch: 'full',
-
       }
     ]
   },

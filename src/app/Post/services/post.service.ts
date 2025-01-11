@@ -47,14 +47,14 @@ export class PostService {
     }
   }
 
-  //** Método para crear un producto, enviando los datos y una imagen asociada. */
+
   async CreatePost( Title: string, imageFile: File): Promise<string>{
     try{
       const formData = new FormData();
 
       formData.append('Title', Title);
 
-      formData.append('imageFile', imageFile, imageFile.name);
+      formData.append('image', imageFile, imageFile.name);
 
 
       const token = this.localStorageService.getVariable('token');
@@ -74,7 +74,13 @@ export class PostService {
       console.log("token: ",token)
 
 
-      return Promise.resolve(response);
+      if (typeof response === 'string') {
+        return Promise.resolve(response);;
+      } else {
+        throw new Error('No se recibió un mensaje de éxito del servidor');
+      }
+
+
 
     }catch (error){
       console.log('Error en CreateProduct',error);
