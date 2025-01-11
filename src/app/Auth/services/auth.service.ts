@@ -47,6 +47,22 @@ export class AuthService {
 
   }
 
+  async register(auhtDto: AuhtDto ): Promise<ResponseAPIRegisterLogin > {
+    try {
+      const response = await firstValueFrom(this.http.post<ResponseAPIRegisterLogin>
+        (this.baseUrl+'/register', auhtDto));
+        return Promise.resolve(response);
+
+    } catch (error) {
+      console.log("error en register", error);
+      let e = error as HttpErrorResponse;
+      this.errors.push(e.message || "error desconosido");
+      return Promise.reject(this.errors)
+
+    }
+
+  }
+
 
 
   /*

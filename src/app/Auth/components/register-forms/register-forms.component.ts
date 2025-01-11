@@ -1,21 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { Router } from '@angular/router';
 import { AuhtDto } from '../../interfaces/AuthDto';
-import { routes } from '../../../app.routes';
 
 @Component({
-  selector: 'auth-login-fomrs',
-  standalone: true,
+  selector: 'auth-register-forms',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [AuthService, LocalStorageService],
-  templateUrl: './login-fomrs.component.html',
-  styleUrls: ['./login-fomrs.component.css']
+  templateUrl: './register-forms.component.html',
+  styleUrl: './register-forms.component.css'
 })
-export class LoginFomrsComponent implements OnInit {
+export class RegisterFormsComponent {
 
   forms!: FormGroup;
   loginAlert: boolean = false;
@@ -44,15 +42,13 @@ export class LoginFomrsComponent implements OnInit {
 
 
 
-  CreateUser(){
-    this.router.navigate(['register']);
-  }
 
-  async login(){
+
+  async register(){
     console.log(this.forms.value)
 
     if(this.forms.invalid){
-      console.log("AAAAAAAAAAAAAAAAA");
+      console.log("form invalido");
       return;
 
     }
@@ -63,7 +59,7 @@ export class LoginFomrsComponent implements OnInit {
         email:     this.forms.value.email,
         password:  this.forms.value.password,
       }
-      const response = await this.authService.login(auhtDto);
+      const response = await this.authService.register(auhtDto);
 
 
 
@@ -113,5 +109,4 @@ export class LoginFomrsComponent implements OnInit {
   get paswordInvalido(){
     return this.forms.get('password')?.invalid && this.forms.get('password')?.touched;
   }
-
 }

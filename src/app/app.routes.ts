@@ -8,6 +8,11 @@ export const routes: Routes = [
     loadComponent: () => import('../app/Auth/components/login-fomrs/login-fomrs.component').then((m) => m.LoginFomrsComponent),
   },
   {
+    path: "register",
+    pathMatch: 'full',
+    loadComponent: () => import('../app/Auth/pages/register-page/register-page.component').then((m) => m.RegisterPageComponent),
+  },
+  {
     path: 'home',
     loadComponent: () => import('../app/Post/pages/home/home.component').then((m) => m.HomeComponent),
     canActivate: [authGuardGuard],
